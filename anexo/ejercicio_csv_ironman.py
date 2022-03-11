@@ -15,6 +15,7 @@ __author__ = "Inove Coding School"
 __email__ = "alumnos@inove.com.ar"
 __version__ = "1.2"
 
+import csv
 
 def ironman():
     print("Ahora sí! buena suerte :)")
@@ -96,6 +97,21 @@ def ironman():
     de Python que resuelva este problema.
 
     '''
+
+    archivo = '2019 Ironman World Championship Results.csv'
+    csvfile = open(archivo, 'r')
+
+    ironman = list(csv.DictReader(csvfile))
+    
+    max_tiempo_swim = 0.0
+    
+    for division in ironman:
+        if division['Division'] == 'MPRO':
+            print() 
+        input()
+
+    #while division == 'MPRO' in ironman:
+
 
 
 if __name__ == '__main__':

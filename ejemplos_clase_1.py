@@ -19,6 +19,7 @@ def diccionario():
     # Imprimir los diccionarios
     print(piso_1)
     print(piso_2)
+    input()
 
     # Ahora digamos que se mundo "Mendoza"
     # y viene la familia Neuquen en su lugar:
@@ -26,7 +27,7 @@ def diccionario():
 
     # ¿Quíen vive en el 1b?
     print(piso_1['b'])  # Naon
-
+    input()
     # En que departamento del segundo piso vive Cordoba
     # Realizar un bucle de diccionarios
     # k --> key

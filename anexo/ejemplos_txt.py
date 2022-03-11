@@ -67,5 +67,7 @@ def write_txt():
 
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
+    
     read_txt()
     write_txt()
+

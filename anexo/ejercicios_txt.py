@@ -16,6 +16,7 @@ __email__ = "alumnos@inove.com.ar"
 __version__ = "1.2"
 
 import csv
+from fileinput import close
 import re
 
 
@@ -35,6 +36,24 @@ def ej1():
     y cumpla el objetivo especificado, retornando la cantidad
     de líneas encontradas.
     '''
+    #fi = open('notas.txt', 'r')
+    #fi = close()
+
+    with open('notas.txt', 'r') as fi:
+        for line in fi:
+            cantidad_lineas += 1
+            #print('Linea leidas:', line, end='')       
+    
+        print(f'Linea leidas primer ejemplo: {cantidad_lineas}')
+
+def contar_lineas(archivo):
+    cantidad_lineas = 0
+
+    with open(archivo, 'r') as fi:
+        for i in fi:
+            cantidad_lineas += 1
+
+        return cantidad_lineas
 
 
 def ej2():
@@ -54,13 +73,24 @@ def ej2():
     contar la cantidad de línea que se copiaron e imprimir
     al final del proceso el valor.
     '''
+    fo = open('Clon notas.txt', 'w')
 
-    # fi = open('nota.txt', 'r')
-    # fo = open(.......)
+    with open('notas.txt', 'r') as fi:
+        for line in fi:
+            copiar_linea = line
+            pegar_linea(copiar_linea, fo)
+            cantidad_lineas += 1
+            
 
     # Recuerde cerrar los archivos al final ;)
+    print(f'Se copiaron: {cantidad_lineas} lineas')
+    fo.flush()
+    fo.close()
+    fi.close()
 
-
+def pegar_linea(pegar_copiado, fo):
+    fo.write(pegar_copiado)
+    
 def ej3():
     print("Cuenta caracteres")
     cantidad_letras = 0
@@ -73,7 +103,11 @@ def ej3():
     Debe realizar la sumatoria total de la cantidad de caracteres de todas
     las líneas para obtener el total del archivo e imprimirlo en pantalla
     '''
-
+    fi = open('texto.txt', 'r')
+    for line in fi:
+        cantidad_letras += len(line)
+        
+    print(cantidad_letras)
 
 def ej4():
     print("Transcribir!")
@@ -94,11 +128,28 @@ def ej4():
     NOTA: Recuerde agregar el salto de línea "\n" a cada entrada
     de texto de la consola antes de copiar la archivo.
     '''
+    fo = open('archivo_txt', 'a')
 
+    texto_archivo = ''
+    while texto_archivo == '':
+        texto_archivo = input('Esperando texto:\n')
+        
+        if texto_archivo == '':
+            print(f'Se copiaron {cantidad_letras} caracteres\n')
+            break
+        else:
+            fo.write(f'{texto_archivo}\n')
+            cantidad_letras += len(texto_archivo)
+
+            texto_archivo = ''
+        
+    fo.flush()
+    fo.close()
 
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
-    ej1()
+    #ej1()
+    #print('Cantidad de lineas leidas:', contar_lineas('texto.txt'))    
     #ej2()
     #ej3()
-    #ej4()
+    ej4()

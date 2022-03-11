@@ -20,7 +20,7 @@ def read_csv():
         print(piso['a'])
 
     csvfile.close()
-
+    
     # Abrir un archivo CSV con with open
     with open('propiedades.csv') as csvfile:
         # Leer todos los datos y almacenarlos en una 
@@ -73,4 +73,4 @@ def write_csv():
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
     read_csv()
-    write_csv()
+    #write_csv()
