@@ -16,9 +16,10 @@ __email__ = "alumnos@inove.com.ar"
 __version__ = "1.2"
 
 import csv
+from multiprocessing.spawn import spawn_main
+# from itertools import count
 
-def ironman():
-    print("Ahora sí! buena suerte :)")
+def ironman(categoria, disciplina):
 
     '''
     Para poder realizar este ejercicio deberán descargarse el
@@ -99,21 +100,98 @@ def ironman():
     '''
 
     archivo = '2019 Ironman World Championship Results.csv'
-    csvfile = open(archivo, 'r')
 
-    ironman = list(csv.DictReader(csvfile))
-    
-    max_tiempo_swim = 0.0
-    
-    for division in ironman:
-        if division['Division'] == 'MPRO':
-            print() 
-        input()
+    with open(archivo) as csvfile:
+        ironman = list(csv.DictReader(csvfile))
 
-    #while division == 'MPRO' in ironman:
+    lista_tiempos = []
+
+    for row in ironman:
+        _categoria = row['Division']
+        if _categoria == categoria:
+            tiempo_lista = row[disciplina]
+            tiempo_segundos = conversion_tiempos(tiempo_lista)
+            if tiempo_segundos == 0:
+                continue
+            else:
+                lista_tiempos.append(tiempo_segundos)
+        else:
+            continue
+
+    max_tiempo, min_tiempo, cantidad_tiempos = max_min_cantidad(lista_tiempos)
+
+    promedio_tiempos = tiempo_promedio(lista_tiempos, cantidad_tiempos)
+
+    print(f'El tiempo maximo en la categoria {categoria} fue de {segundos_a_segundos_minutos_y_horas(max_tiempo)} en la disciplina {disciplina}\n') 
+    print(f'El tiempo minimo en la categoria {categoria} fue de {segundos_a_segundos_minutos_y_horas(min_tiempo)} en la disciplina {disciplina}\n') 
+    print(f'El tiempo promedio de la categoria {categoria} fue de {segundos_a_segundos_minutos_y_horas(promedio_tiempos)} en la disciplina {disciplina}')
+    
+    
+    
+def max_min_cantidad(lista_tiempos):
+    max_tiempo = max(lista_tiempos)
+    min_tiempo = min(lista_tiempos)
+    cantidad_tiempos = len(lista_tiempos)
+    return max_tiempo, min_tiempo, cantidad_tiempos
+
+def tiempo_promedio(lista_tiempos, cantidad_tiempos):
+    promedio_tiempos = sum(lista_tiempos) // cantidad_tiempos
+    return promedio_tiempos
+
+def conversion_tiempos(tiempo):
+    operacion_tiempo = tiempo
+
+    '''Excepcion para los datos vacios'''
+    if operacion_tiempo == '':
+        operacion_tiempo = '00:00:00'
+
+    h, m, s = operacion_tiempo.strip().split(':')
+    tiempo_segundos = int(h)*3600 + int(m)*60 + int(s)
+    return tiempo_segundos
+
+def segundos_a_segundos_minutos_y_horas(segundos):
+    horas = int(segundos / 60 / 60)
+    segundos -= horas*60*60
+    minutos = int(segundos/60)
+    segundos -= minutos*60
+    return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+
 
 
 
 if __name__ == '__main__':
-    print("Ejercicios de práctica extra")
-    ironman()
+    print("Ejercicios de práctica extra\n")
+
+    print("""Elija la categoria y disciplina para investigar los resultados de los tiempos\n\n1 - MPRO
+2 - M45-49
+3 - M25-29
+4 - M18-24\n""")
+    user_categoria = input('Elija la categoria:\n')
+    if user_categoria == '1':
+        user_categoria = 'MPRO'
+    elif user_categoria == '2':
+        user_categoria = 'M45-49'
+    elif user_categoria == '3':
+        user_categoria = 'M25-29'
+    elif user_categoria == '4':
+        user_categoria = 'M18-24'
+    
+    print('''Elija la disciplina\n\n1 - Bike
+2 - Swim
+3 - Run\n''')
+
+    user_disciplina = input('Elija la disciplina\n')
+
+    if user_disciplina == '1':
+        user_disciplina = 'Bike'
+        input('Vamos por la disciplina Bike')
+    elif user_disciplina == '2':
+        user_disciplina = 'Swim'
+        input('Vamos por la disciplina Swim')
+
+    elif user_disciplina == '3':
+        user_disciplina = 'Run'
+        input('Vamos por la disciplina Run')
+
+
+    ironman(user_categoria, user_disciplina)
